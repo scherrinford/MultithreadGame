@@ -87,7 +87,6 @@ void* beastInitialize(void *args) {
     return NULL;
 }
 
-//TODO jakas refaktoryzacja teges
 //watek obslugujacy 2 gracza
 void* player2Initialize(void *args) {
     player2.setStartPosition();
@@ -108,11 +107,14 @@ void* player2Initialize(void *args) {
         sem_post(newClientAsk);
         if(sharedData->status==LOGIN){
             mvprintw(1,70,"player 2 is conected");
+            legend.printGameStatistic2(player2);
+            sem_wait(&sharedData->criticalSection);
             sharedData->status=CONNECTED;
+            sem_post(&sharedData->criticalSection);
         }
         sem_wait(waitForClient); //czeka na ruch klienta
         if(sharedData->status==CONNECTED){
-
+            mvprintw(1,70,"player 2 is conected");
             player2.clearLastPosition(player2.x, player2.y, tileType);
 
             if(valicateMove(sharedData->tmpY, sharedData->tmpX)){
@@ -135,14 +137,16 @@ void* player2Initialize(void *args) {
             maze.displayPlayer(player2.y, player2.x, PLAYER2);
             legend.printGameStatistic2(player2);
             sem_post(&sharedData->criticalSection);
+            sem_post(&sharedData->criticalSection);
         }
         if(sharedData->status==DISCONNECTED){
             mvprintw(1,70,"player 2 is disconected");
             mvaddch(player2.y,player2.x,EMPTY);
             legend.clearGameStatistic(player2);
-            player2.clearLastPosition(player2.y, player2.x, EMPTY);
+            player2.clearPlayerStats();
             sem_post(&sharedData->criticalSection);
             sem_post(dataSet);
+            //sem_wait(newClientAsk);
         }
 
     }

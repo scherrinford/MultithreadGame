@@ -53,6 +53,8 @@ public:
     void printPlayerView();
 
     int playerNumber;
+
+    void clearPlayerStats();
 };
 
 #define DISCONNECTED     0

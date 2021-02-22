@@ -150,3 +150,9 @@ void Player::printPlayerView() {
     attroff(COLOR_PAIR(PLAYER_PAIR));
     //mvaddch(1, 1, playerViewTile[1][1]);
 }
+
+void Player::clearPlayerStats() {
+    carriedCoins = 0;
+    broughtCoins = 0;
+    deaths = 0;
+}

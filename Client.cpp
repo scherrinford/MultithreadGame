@@ -29,9 +29,13 @@ int Client::clientJoinToServer(){
     synchroSem = sem_open("/synchroSem", 0);
 
     //semafor na status
+    sem_wait(&sharedData->criticalSection);
     //sharedData->status = LOGIN;
-
     sharedData->status = CONNECTED;
+    sem_post(&sharedData->criticalSection);
+
+
+
     return 0;
 }
 
@@ -42,7 +46,9 @@ int Client::serverDosntExist() {
 
 void Client::closeConnection() {
     //sem_wait(&sharedData->criticalSection);
+    sem_wait(&sharedData->criticalSection);
     sharedData->status = DISCONNECTED;
+    sem_post(&sharedData->criticalSection);
     munmap(sharedData, sizeof(shared_data_t));
     sem_close(roundTime);
     sem_close(validateMoveSem);
@@ -123,14 +129,15 @@ int Client::runClient(void) {
 
     sharedData->player.printPlayerView();
 
-    pthread_t displayMapThread;
+    //pthread_t displayMapThread;
     //pthread_create(&displayMapThread, NULL, &Client::displayMap, this);
 
     sem_wait(dataSet);
     sem_wait(&sharedData->criticalSection); //blokuje przed jednoczesnym zapisaniem do pamieci wsp
+    //sem_post(newClientAsk);
     while((c = getch())){
 
-        sem_wait(newClientAsk);
+        sem_post(newClientAsk);
         sem_wait(&sharedData->criticalSection);
         if(c == KEY_UP) {
             sharedData->tmpX = sharedData->player.x;
@@ -156,6 +163,7 @@ int Client::runClient(void) {
             sharedData->tmpX = sharedData->player.x;
             sharedData->tmpY = sharedData->player.y;
         }
+        //sem_post(&sharedData->criticalSection);
         sem_post(waitForClient); //klient wyslal odpowiedz
 
         clock_gettime(CLOCK_REALTIME, &tm);
