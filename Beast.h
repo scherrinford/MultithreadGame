@@ -2,6 +2,7 @@
 #define UNTITLED3_BEAST_H
 
 #include "Maze.h"
+#define EMPTY             ' '
 
 #define PLAYER1      '1'
 #define PLAYER2      '2'
@@ -18,6 +19,9 @@ class Beast{
     char tile = EMPTY;
 
 public:
+    //Player player1;
+    //Player player2;
+
     void moveBeast();
     void setStartPosition();
     int validateMove(int x, int y);

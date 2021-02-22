@@ -1,7 +1,7 @@
 #ifndef UNTITLED3_LEGEND_H
 #define UNTITLED3_LEGEND_H
 
-#include "PlayerHandler.h"
+#include "Player.h"
 
 #define EMPTY_PAIR     1
 #define BEAST_PAIR     2
@@ -20,7 +20,11 @@ private:
 public:
     void setPosition(int width, int height);
     void printLegend();
-    void printGameStatistic(PlayerHandler player);
+    void printGameStatistic(Player player);
+
+    void printGameStatistic2(Player player);
+
+    void clearGameStatistic(Player player);
 };
 
 #endif //UNTITLED3_LEGEND_H

@@ -3,6 +3,7 @@
 #include "Legend.h"
 #include <ctime>
 #include <iostream>
+#include "Player.h"
 
 //generowanie planszy
 void Maze::mazeGenerator() {
@@ -91,4 +92,18 @@ void Maze::setBase() {
     attron(COLOR_PAIR(BASE_PAIR));
     dropTreasure(BASE);
     attroff(COLOR_PAIR(BASE_PAIR));
+}
+
+void Maze::dropCarriedCoins(int coins, int x, int y) {
+    droppedTreasures = coins;
+    attron(COLOR_PAIR(COIN_PAIR));
+    mvaddch(y, x, DROPPED_TREASURE);
+    attroff(COLOR_PAIR(COIN_PAIR));
+}
+
+void Maze::displayPlayer(int y, int x, int playerNumber) {
+    attron(COLOR_PAIR(PLAYER_PAIR));
+    mvprintw(y, x, "%c", playerNumber);
+    attroff(COLOR_PAIR(PLAYER_PAIR));
+    refresh();
 }

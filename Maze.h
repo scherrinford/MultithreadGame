@@ -1,6 +1,7 @@
 #ifndef UNTITLED3_MAZE_H
 #define UNTITLED3_MAZE_H
 #include <ncurses.h>
+#include "Player.h"
 
 #define WALL              '^'
 #define EMPTY             ' '
@@ -25,13 +26,14 @@
 #define RAND_MOVE_LEFT 2
 #define RAND_MOVE_RIGHT 3
 
-#define WIDTH 80
-#define HEIGHT 40
+#define WIDTH 40
+#define HEIGHT 20
 
 class Maze{
 
     int width = WIDTH;
     int height = HEIGHT;
+    int droppedTreasures = 0;
 
 public:
 
@@ -45,6 +47,8 @@ public:
     static int validatePosition(int y, int x);
     void setBushes();
     void setBase();
+    void displayPlayer(int y, int x, int playerNumber);
+    void dropCarriedCoins(int coins, int x, int y);
 };
 
 #endif //UNTITLED3_MAZE_H

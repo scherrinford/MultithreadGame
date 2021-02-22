@@ -22,11 +22,13 @@ int Beast::validateMove(int x, int y) {
     return (mvinch(y, x) & A_CHARTEXT) != WALL;
 }
 
+
 void Beast::moveBeast() {
     int unchecked[4] = { RAND_MOVE_UP, RAND_MOVE_DOWN, RAND_MOVE_LEFT, RAND_MOVE_RIGHT};
-    int dir;
+    int dir, dirPrev;
     while(true)
     {
+        dirPrev = dir;
         dir = searchPlayer();
         int r = rand()%4;
         if(dir==-1){ dir = unchecked[r]; }
@@ -42,12 +44,13 @@ void Beast::moveBeast() {
             y += diry;
             clearLastTile(x-dirx,y-diry);
             tile = mvinch(y, x) & A_CHARTEXT;
-            displayBeast();
+            //displayBeast();
             break;
         }
 
 
     }
+
 
 
 }
@@ -65,12 +68,12 @@ void Beast::clearLastTile(int x, int y) {
         mvaddch(y, x, tile);
         attroff(COLOR_PAIR(BASE_PAIR));
     }
-    else if(tile==BUSHES)  mvaddch(y, x, tile);
-    else if(tile==BIG_TREASURE || tile == SMALL_TREASURE || tile == ONE_COIN){
+    else if(tile==BIG_TREASURE || tile == SMALL_TREASURE || tile == ONE_COIN || tile == DROPPED_TREASURE){
         attron(COLOR_PAIR(COIN_PAIR));
         mvaddch(y, x, tile);
         attroff(COLOR_PAIR(COIN_PAIR));
     }
+    else if(tile==BUSHES)  mvaddch(y, x, tile);
     else mvaddch(y, x, ' ');
     refresh();
     //mvaddch(y, x, EMPTY);
